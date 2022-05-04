@@ -3,15 +3,25 @@ package com.example.test_javafx;
 import java.util.Random;
 
 public class Serwer extends Thread{
-    public static Gracz[] gracze = new Gracz[3];
+    public static Gracz gracze[] = new Gracz[3];
     public static int tura;
     public static boolean hits[][] = new boolean[16][9];
     public static boolean shipPlacement[][] = new boolean[16][9];
 
     public static void main(String[] args){
-
+        gracze[0] = new Gracz();
+        gracze[1] = new Gracz();
+        gracze[2] = new Gracz();
         generateShips();
-
+        for(int i = 0; i < 9; i++){
+            for(int k = 0; k < 16; k++){
+                if(shipPlacement[k][i])
+                    System.out.print('O');
+                else
+                    System.out.print(".");
+            }
+            System.out.println("");
+        }
     }
 
     private static void generateShips() {
@@ -28,7 +38,7 @@ public class Serwer extends Thread{
                 if(o){  // horizontal
                     if(x + shipSize < 16){
                         for(int k = 0; k < shipSize; k++){
-                            if(!shipPlacement[y][x + k]){
+                            if(!shipPlacement[x + k][y]){
                                 free = true;
                             }
                             else
@@ -40,8 +50,9 @@ public class Serwer extends Thread{
                         }
                         else{
                             for(int k = 0; k < shipSize; k++){
-                                shipPlacement[y][x + k] = true;
+                                shipPlacement[x + k][y] = true;
                             }
+                            gracze[i].idGracza = 5;
                             gracze[i].stateks[l].start_x = x;
                             gracze[i].stateks[l].start_y = y;
                             gracze[i].stateks[l].end_x = x + shipSize;
@@ -60,7 +71,7 @@ public class Serwer extends Thread{
                 else{   // vertical
                     if(y + shipSize < 9){
                         for(int k = 0; k < shipSize; k++){
-                            if(!shipPlacement[y + k][x]){
+                            if(!shipPlacement[x][y + k]){
                                 free = true;
                             }
                             else
@@ -72,8 +83,9 @@ public class Serwer extends Thread{
                         }
                         else{
                             for(int k = 0; k < shipSize; k++){
-                                shipPlacement[y+k][x] = true;
+                                shipPlacement[x][y + k] = true;
                             }
+                            gracze[i].idGracza = 5;
                             gracze[i].stateks[l].start_x = x;
                             gracze[i].stateks[l].start_y = y;
                             gracze[i].stateks[l].end_x = x;
