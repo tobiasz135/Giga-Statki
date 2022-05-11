@@ -35,8 +35,8 @@ public class Serwer extends Thread{
         }
         // server is listening on port 5056
         ServerSocket ss = new ServerSocket(5056);
-        Thread clientMessageHandler = new MessageHandler();
-        clientMessageHandler.start();
+        //hread clientMessageHandler = new MessageHandler();
+        //clientMessageHandler.start();
 
         // running infinite loop for getting
         // client request
@@ -59,10 +59,10 @@ public class Serwer extends Thread{
                 System.out.println("Assigning new thread for this client");
 
                 // create a new thread object
-                Thread t = new ClientHandler(s, dis, dos);
+                //Thread t = new ClientHandler(s, dis, dos);
 
                 // Invoking the start() method
-                t.start();
+                //t.start();
 
             }
             catch (Exception e){
