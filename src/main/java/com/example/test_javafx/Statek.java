@@ -8,4 +8,5 @@ public class Statek {
     public int sank = 1;
     public int size = 1;
     public int owner = 1;
+    public boolean vertical = false;
 }

@@ -25,6 +25,7 @@ public class Serwer extends Thread{
         gracze[1] = new Gracz();
         gracze[2] = new Gracz();
         generateShips();
+        //displayShips();
         for(int i = 0; i < HEIGHT; i++){
             for(int k = 0; k < WIDTH; k++){
                 if(shipPlacement[k][i])
@@ -79,6 +80,28 @@ public class Serwer extends Thread{
 
     }
 
+    private static void displayShips() {
+        for (int i = 0; i < HEIGHT; i++) {
+            for (int k = 0; k < WIDTH; k++) {
+                if (shipPlacement[k][i]) {
+                    for (int z = 0; z < MAX_PLAYERS; z++) {
+                        for(int a = 0; a < 4; a++) {
+                            if (!gracze[z].stateks[a].vertical && i >= gracze[z].stateks[a].start_y && i <= gracze[z].stateks[a].end_y && gracze[z].stateks[a].start_x == k)
+                                System.out.print(gracze[z].idGracza);
+                            else if (gracze[z].stateks[a].vertical && k >= gracze[z].stateks[a].start_x && k <= gracze[z].stateks[a].end_x && gracze[z].stateks[a].start_y == i)
+                                System.out.print(gracze[z].idGracza);
+                        }
+
+                    }
+                }
+                else
+                    System.out.print(".");
+                }
+                System.out.println("");
+            }
+        System.out.println("");
+        }
+
     private static void generateShips() {
         Random random_x = new Random();
         Random random_y = new Random();
@@ -90,7 +113,7 @@ public class Serwer extends Thread{
                 boolean o = orient.nextBoolean();
                 int x = random_x.nextInt(WIDTH);
                 int y = random_y.nextInt(HEIGHT);
-                if(o){  // horizontal
+                if(o){  // vertical
                     if(x + shipSize < WIDTH){
                         for(int k = 0; k < shipSize; k++){
                             if(!shipPlacement[x + k][y]){
@@ -115,6 +138,7 @@ public class Serwer extends Thread{
                             gracze[i].stateks[l].owner = gracze[i].idGracza;
                             gracze[i].stateks[l].size = shipSize;
                             gracze[i].stateks[l].sank = 0;
+                            gracze[i].stateks[l].vertical = true;
                             shipSize--;
                         }
                     }
@@ -123,7 +147,7 @@ public class Serwer extends Thread{
                         continue;
                     }
                 }
-                else{   // vertical
+                else{   // horizontal
                     if(y + shipSize < HEIGHT){
                         for(int k = 0; k < shipSize; k++){
                             if(!shipPlacement[x][y + k]){
@@ -148,6 +172,7 @@ public class Serwer extends Thread{
                             gracze[i].stateks[l].owner = gracze[i].idGracza;
                             gracze[i].stateks[l].size = shipSize;
                             gracze[i].stateks[l].sank = 0;
+                            gracze[i].stateks[l].vertical = false;
                             shipSize--;
                         }
                     }
