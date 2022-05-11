@@ -1,20 +1,31 @@
 package com.example.test_javafx;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Serwer extends Thread{
-    public static Gracz gracze[] = new Gracz[3];
+    final static int WIDTH = 16;
+    final static int HEIGHT = 9;
+    final static int MAX_PLAYERS = 3;
+    public static Gracz gracze[] = new Gracz[MAX_PLAYERS];
     public static int tura;
-    public static boolean hits[][] = new boolean[16][9];
-    public static boolean shipPlacement[][] = new boolean[16][9];
+    public static boolean hits[][] = new boolean[WIDTH][HEIGHT];
+    public static boolean shipPlacement[][] = new boolean[WIDTH][HEIGHT];
+    public static List<Socket> clients = new ArrayList<>();
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         gracze[0] = new Gracz();
         gracze[1] = new Gracz();
         gracze[2] = new Gracz();
         generateShips();
-        for(int i = 0; i < 9; i++){
-            for(int k = 0; k < 16; k++){
+        for(int i = 0; i < HEIGHT; i++){
+            for(int k = 0; k < WIDTH; k++){
                 if(shipPlacement[k][i])
                     System.out.print('O');
                 else
@@ -22,21 +33,59 @@ public class Serwer extends Thread{
             }
             System.out.println("");
         }
+        // server is listening on port 5056
+        ServerSocket ss = new ServerSocket(5056);
+        Thread clientMessageHandler = new MessageHandler();
+        clientMessageHandler.start();
+
+        // running infinite loop for getting
+        // client request
+        while (true)
+        {
+            Socket s = null;
+
+            try
+            {
+                // socket object to receive incoming client requests
+                s = ss.accept();
+                clients.add(s);
+
+                System.out.println("A new client is connected : " + s);
+
+                // obtaining input and out streams
+                DataInputStream dis = new DataInputStream(s.getInputStream());
+                DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+
+                System.out.println("Assigning new thread for this client");
+
+                // create a new thread object
+                Thread t = new ClientHandler(s, dis, dos);
+
+                // Invoking the start() method
+                t.start();
+
+            }
+            catch (Exception e){
+                s.close();
+                e.printStackTrace();
+            }
+        }
+
     }
 
     private static void generateShips() {
         Random random_x = new Random();
         Random random_y = new Random();
         Random orient = new Random();
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < MAX_PLAYERS; i++){
             boolean free = false;
             int shipSize = 5;
             for(int l = 0; l < 4;l++){
                 boolean o = orient.nextBoolean();
-                int x = random_x.nextInt(16);
-                int y = random_y.nextInt(9);
+                int x = random_x.nextInt(WIDTH);
+                int y = random_y.nextInt(HEIGHT);
                 if(o){  // horizontal
-                    if(x + shipSize < 16){
+                    if(x + shipSize < WIDTH){
                         for(int k = 0; k < shipSize; k++){
                             if(!shipPlacement[x + k][y]){
                                 free = true;
@@ -52,7 +101,7 @@ public class Serwer extends Thread{
                             for(int k = 0; k < shipSize; k++){
                                 shipPlacement[x + k][y] = true;
                             }
-                            gracze[i].idGracza = 5;
+                            gracze[i].idGracza = i;
                             gracze[i].stateks[l].start_x = x;
                             gracze[i].stateks[l].start_y = y;
                             gracze[i].stateks[l].end_x = x + shipSize;
@@ -69,7 +118,7 @@ public class Serwer extends Thread{
                     }
                 }
                 else{   // vertical
-                    if(y + shipSize < 9){
+                    if(y + shipSize < HEIGHT){
                         for(int k = 0; k < shipSize; k++){
                             if(!shipPlacement[x][y + k]){
                                 free = true;
@@ -85,7 +134,7 @@ public class Serwer extends Thread{
                             for(int k = 0; k < shipSize; k++){
                                 shipPlacement[x][y + k] = true;
                             }
-                            gracze[i].idGracza = 5;
+                            gracze[i].idGracza = i;
                             gracze[i].stateks[l].start_x = x;
                             gracze[i].stateks[l].start_y = y;
                             gracze[i].stateks[l].end_x = x;
