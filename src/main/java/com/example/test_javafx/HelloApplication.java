@@ -18,8 +18,11 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        ClientReceiver clientReceiver = new ClientReceiver();
+        clientReceiver.start();
         //FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         BorderPane border = new BorderPane();
+
 
         GridPane grid = new GridPane();
         GridPane gridPane = new GridPane();
