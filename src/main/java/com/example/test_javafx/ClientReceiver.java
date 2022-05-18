@@ -1,12 +1,9 @@
 package com.example.test_javafx;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
-public class ClientReceiver extends Thread {
+public class ClientReceiver extends Thread implements Serializable {
     String ip="localhost";
     int port=5056;
     Socket Client=new Socket(ip,port);

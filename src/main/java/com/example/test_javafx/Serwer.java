@@ -51,13 +51,14 @@ public class Serwer extends Thread{
                 System.out.println("A new client is connected : " + s);
 
                 // obtaining input and out streams
-                ObjectInputStream dis  = new ObjectInputStream(s.getInputStream());
-                ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream());
+                gracze[0].out = new ObjectOutputStream(s.getOutputStream());
+                gracze[0].in = new ObjectInputStream(s.getInputStream());
+
 
                 System.out.println("Assigning new thread for this client");
 
                 // create a new thread object
-                Thread t = new SerwerClientHandler(s, dis, dos);
+                Thread t = new SerwerClientHandler(s, gracze[0].in, gracze[0].out);
 
                 // Invoking the start() method
                 t.start();
