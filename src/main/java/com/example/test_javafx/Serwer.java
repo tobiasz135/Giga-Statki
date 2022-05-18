@@ -1,8 +1,8 @@
 package com.example.test_javafx;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -13,7 +13,6 @@ public class Serwer extends Thread{
     final static int WIDTH = 16;
     final static int HEIGHT = 9;
     final static int MAX_PLAYERS = 3;
-    final static int PORT = 5555;
     public static Gracz gracze[] = new Gracz[MAX_PLAYERS];
     public static int tura;
     public static boolean hits[][] = new boolean[WIDTH][HEIGHT];
@@ -25,7 +24,6 @@ public class Serwer extends Thread{
         gracze[1] = new Gracz();
         gracze[2] = new Gracz();
         generateShips();
-        //displayShips();
         for(int i = 0; i < HEIGHT; i++){
             for(int k = 0; k < WIDTH; k++){
                 if(shipPlacement[k][i])
@@ -36,23 +34,18 @@ public class Serwer extends Thread{
             System.out.println("");
         }
         // server is listening on port 5056
-        ServerSocket ss = new ServerSocket(PORT);
-        Thread clientMessageHandler = new SerwerMessageHandler();
-        clientMessageHandler.start();
-        System.out.println("Listening on port: " + PORT);
+        ServerSocket ss = new ServerSocket(5056);
+        //hread clientMessageHandler = new MessageHandler();
+        //clientMessageHandler.start();
 
         // running infinite loop for getting
         // client request
         while (true)
         {
             Socket s = null;
+
             try
             {
-                if(clients.size() >= MAX_PLAYERS) {
-                    System.out.println("Server is full!");
-                    continue;
-                }
-
                 // socket object to receive incoming client requests
                 s = ss.accept();
                 clients.add(s);
@@ -61,15 +54,15 @@ public class Serwer extends Thread{
 
                 // obtaining input and out streams
                 DataInputStream dis = new DataInputStream(s.getInputStream());
-                ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream());
+                DataOutputStream dos = new DataOutputStream(s.getOutputStream());
 
                 System.out.println("Assigning new thread for this client");
 
                 // create a new thread object
-                Thread t = new SerwerClientHandler(s, dis, dos);
+                //Thread t = new ClientHandler(s, dis, dos);
 
                 // Invoking the start() method
-                t.start();
+                //t.start();
 
             }
             catch (Exception e){
@@ -79,28 +72,6 @@ public class Serwer extends Thread{
         }
 
     }
-
-    private static void displayShips() {
-        for (int i = 0; i < HEIGHT; i++) {
-            for (int k = 0; k < WIDTH; k++) {
-                if (shipPlacement[k][i]) {
-                    for (int z = 0; z < MAX_PLAYERS; z++) {
-                        for(int a = 0; a < 4; a++) {
-                            if (!gracze[z].stateks[a].vertical && i >= gracze[z].stateks[a].start_y && i <= gracze[z].stateks[a].end_y && gracze[z].stateks[a].start_x == k)
-                                System.out.print(gracze[z].idGracza);
-                            else if (gracze[z].stateks[a].vertical && k >= gracze[z].stateks[a].start_x && k <= gracze[z].stateks[a].end_x && gracze[z].stateks[a].start_y == i)
-                                System.out.print(gracze[z].idGracza);
-                        }
-
-                    }
-                }
-                else
-                    System.out.print(".");
-                }
-                System.out.println("");
-            }
-        System.out.println("");
-        }
 
     private static void generateShips() {
         Random random_x = new Random();
@@ -113,7 +84,7 @@ public class Serwer extends Thread{
                 boolean o = orient.nextBoolean();
                 int x = random_x.nextInt(WIDTH);
                 int y = random_y.nextInt(HEIGHT);
-                if(o){  // vertical
+                if(o){  // horizontal
                     if(x + shipSize < WIDTH){
                         for(int k = 0; k < shipSize; k++){
                             if(!shipPlacement[x + k][y]){
@@ -138,7 +109,6 @@ public class Serwer extends Thread{
                             gracze[i].stateks[l].owner = gracze[i].idGracza;
                             gracze[i].stateks[l].size = shipSize;
                             gracze[i].stateks[l].sank = 0;
-                            gracze[i].stateks[l].vertical = true;
                             shipSize--;
                         }
                     }
@@ -147,7 +117,7 @@ public class Serwer extends Thread{
                         continue;
                     }
                 }
-                else{   // horizontal
+                else{   // vertical
                     if(y + shipSize < HEIGHT){
                         for(int k = 0; k < shipSize; k++){
                             if(!shipPlacement[x][y + k]){
@@ -172,7 +142,6 @@ public class Serwer extends Thread{
                             gracze[i].stateks[l].owner = gracze[i].idGracza;
                             gracze[i].stateks[l].size = shipSize;
                             gracze[i].stateks[l].sank = 0;
-                            gracze[i].stateks[l].vertical = false;
                             shipSize--;
                         }
                     }
