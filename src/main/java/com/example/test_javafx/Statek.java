@@ -1,6 +1,8 @@
 package com.example.test_javafx;
 
-public class Statek {
+import java.io.Serializable;
+
+public class Statek implements Serializable {
     public int start_x = 1;
     public int start_y = 1;
     public int end_x = 1;

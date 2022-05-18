@@ -1,18 +1,15 @@
 package com.example.test_javafx;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class SerwerClientHandler extends Thread {
-    final DataInputStream dis;
+    final ObjectInputStream dis;
     final ObjectOutputStream dos;
     final Socket s;
 
     // Constructor
-    public SerwerClientHandler(Socket s, DataInputStream dis, ObjectOutputStream dos)
+    public SerwerClientHandler(Socket s, ObjectInputStream dis, ObjectOutputStream dos)
     {
         this.s = s;
         this.dis = dis;

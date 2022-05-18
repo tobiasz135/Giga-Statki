@@ -1,6 +1,8 @@
 package com.example.test_javafx;
 
-public class Gracz {
+import java.io.Serializable;
+
+public class Gracz implements Serializable {
     public Statek stateks[];
     public int idGracza;
 

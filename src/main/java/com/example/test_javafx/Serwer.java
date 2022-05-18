@@ -1,9 +1,6 @@
 package com.example.test_javafx;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -54,7 +51,7 @@ public class Serwer extends Thread{
                 System.out.println("A new client is connected : " + s);
 
                 // obtaining input and out streams
-                DataInputStream dis = new DataInputStream(s.getInputStream());
+                ObjectInputStream dis  = new ObjectInputStream(s.getInputStream());
                 ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream());
 
                 System.out.println("Assigning new thread for this client");

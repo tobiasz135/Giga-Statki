@@ -1,6 +1,8 @@
 package com.example.test_javafx;
 
-public class DataPackage {
+import java.io.Serializable;
+
+public class DataPackage implements Serializable {
     public boolean[][] hits = Serwer.hits;
     public int turn = Serwer.tura;
     //public Statek[] stateks = new Statek[12];

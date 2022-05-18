@@ -22,6 +22,8 @@ public class SerwerMessageHandler extends Thread {
                     dos = new ObjectOutputStream(clients.get(i).getOutputStream());
                     dos.writeObject(dataPackage);
                     System.out.println("Serwer do Klient " + clients.get(i).getPort());
+                    //dos.reset();
+
                 }
                 sleep(1000);
 
