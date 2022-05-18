@@ -3,6 +3,7 @@ package com.example.test_javafx;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -13,10 +14,10 @@ public class Serwer extends Thread{
     final static int WIDTH = 16;
     final static int HEIGHT = 9;
     final static int MAX_PLAYERS = 3;
-    public static Gracz gracze[] = new Gracz[MAX_PLAYERS];
+    public static Gracz[] gracze = new Gracz[MAX_PLAYERS];
     public static int tura;
-    public static boolean hits[][] = new boolean[WIDTH][HEIGHT];
-    public static boolean shipPlacement[][] = new boolean[WIDTH][HEIGHT];
+    public static boolean[][] hits = new boolean[WIDTH][HEIGHT];
+    public static boolean[][] shipPlacement = new boolean[WIDTH][HEIGHT];
     public static List<Socket> clients = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
@@ -35,8 +36,8 @@ public class Serwer extends Thread{
         }
         // server is listening on port 5056
         ServerSocket ss = new ServerSocket(5056);
-        //hread clientMessageHandler = new MessageHandler();
-        //clientMessageHandler.start();
+        Thread clientMessageHandler = new SerwerMessageHandler();
+        clientMessageHandler.start();
 
         // running infinite loop for getting
         // client request
@@ -54,15 +55,15 @@ public class Serwer extends Thread{
 
                 // obtaining input and out streams
                 DataInputStream dis = new DataInputStream(s.getInputStream());
-                DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+                ObjectOutputStream dos = new ObjectOutputStream(s.getOutputStream());
 
                 System.out.println("Assigning new thread for this client");
 
                 // create a new thread object
-                //Thread t = new ClientHandler(s, dis, dos);
+                Thread t = new SerwerClientHandler(s, dis, dos);
 
                 // Invoking the start() method
-                //t.start();
+                t.start();
 
             }
             catch (Exception e){
