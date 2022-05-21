@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 
 public class ClientReceiver extends Thread implements Serializable {
+    public static DataPackage dataPackage;
     String ip="localhost";
     int port=5056;
     Socket Client=new Socket(ip,port);
@@ -18,7 +19,7 @@ public class ClientReceiver extends Thread implements Serializable {
 
 
     public void run() {
-        DataPackage dataPackage;
+        //DataPackage dataPackage;
         try {
             while (true) {
                 //Object obj = dis.readObject();
