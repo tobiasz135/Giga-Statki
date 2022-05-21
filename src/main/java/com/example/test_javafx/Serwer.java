@@ -15,7 +15,8 @@ public class Serwer extends Thread{
     public static int tura;
     public static boolean[][] hits = new boolean[WIDTH][HEIGHT];
     public static boolean[][] shipPlacement = new boolean[WIDTH][HEIGHT];
-    public static List<Socket> clients = new ArrayList<>();
+    public static int CONNECTED_USERS = 0;
+    //public static List<Socket> clients = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         gracze[0] = new Gracz();
@@ -46,19 +47,27 @@ public class Serwer extends Thread{
             {
                 // socket object to receive incoming client requests
                 s = ss.accept();
-                clients.add(s);
+                //clients.add(s);
 
                 System.out.println("A new client is connected : " + s);
+                if(CONNECTED_USERS == MAX_PLAYERS - 1){
+                    System.out.println("Server is full");
+                    continue;
+                }
 
                 // obtaining input and out streams
-                gracze[0].out = new ObjectOutputStream(s.getOutputStream());
-                gracze[0].in = new ObjectInputStream(s.getInputStream());
+                gracze[CONNECTED_USERS].out = new ObjectOutputStream(s.getOutputStream());
+                gracze[CONNECTED_USERS].in = new ObjectInputStream(s.getInputStream());
+                gracze[CONNECTED_USERS].socket = s;
+                gracze[CONNECTED_USERS].idGracza = s.getLocalPort();
 
 
                 System.out.println("Assigning new thread for this client");
 
                 // create a new thread object
-                Thread t = new SerwerClientHandler(s, gracze[0].in, gracze[0].out);
+
+                Thread t = new SerwerClientHandler(s, gracze[CONNECTED_USERS].in, gracze[CONNECTED_USERS].out);
+                CONNECTED_USERS++;
 
                 // Invoking the start() method
                 t.start();
@@ -66,6 +75,7 @@ public class Serwer extends Thread{
             }
             catch (Exception e){
                 s.close();
+                CONNECTED_USERS--;
                 e.printStackTrace();
             }
         }
@@ -100,7 +110,7 @@ public class Serwer extends Thread{
                             for(int k = 0; k < shipSize; k++){
                                 shipPlacement[x + k][y] = true;
                             }
-                            gracze[i].idGracza = i;
+                            //gracze[i].idGracza = gracze[i].socket.getPort();
                             gracze[i].stateks[l].start_x = x;
                             gracze[i].stateks[l].start_y = y;
                             gracze[i].stateks[l].end_x = x + shipSize;
@@ -133,7 +143,7 @@ public class Serwer extends Thread{
                             for(int k = 0; k < shipSize; k++){
                                 shipPlacement[x][y + k] = true;
                             }
-                            gracze[i].idGracza = i;
+                            //gracze[i].idGracza = gracze[i].socket.getPort();
                             gracze[i].stateks[l].start_x = x;
                             gracze[i].stateks[l].start_y = y;
                             gracze[i].stateks[l].end_x = x;

@@ -3,12 +3,14 @@ package com.example.test_javafx;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.Socket;
 
 public class Gracz implements Serializable {
     public Statek stateks[];
     public int idGracza;
     transient ObjectInputStream in;
     transient ObjectOutputStream out;
+    transient Socket socket;
 
     Gracz(){
         stateks = new Statek[4];
