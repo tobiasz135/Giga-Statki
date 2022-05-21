@@ -31,14 +31,19 @@ public class ClientReceiver extends Thread implements Serializable {
                 if (dataPackage != null) {
                     //System.out.println("Odebrano: " + dataPackage.gracze.get(0).getNick());
                     System.out.println(dataPackage.connected_users);
+                    for(int i = 0; i < 4; i++){
+                        System.out.println(dataPackage.gracze[0].stateks[i].size);
+                    }
+
                     System.out.println(Client.getLocalPort());
                     System.out.println(dataPackage.gracze[0].idGracza);
                 }
                 Platform.runLater(new Runnable(){
                     @Override
                     public void run() {
+                        HelloApplication.disableFriendlyFire(dataPackage, Client);
                         HelloApplication.drawShips(dataPackage);
-                        //HelloApplication.drawHits(dataPackage);
+                        HelloApplication.drawHits(dataPackage);
                         System.out.println(dataPackage.connected_users);
                     }
                 });

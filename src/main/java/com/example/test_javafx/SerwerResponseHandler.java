@@ -22,7 +22,7 @@ public class SerwerResponseHandler extends Thread {
             try {
                 ClientDataPackege obj = (ClientDataPackege) dis.readObject();
                 //System.out.print("DEBUG");
-                Serwer.hits[obj.y][obj.x]=true;
+                Serwer.hits[obj.x][obj.y]=true;
                 System.out.println(obj.x + ", " + obj.y);
                 Serwer.tura++;
                 /*if(received.equals("Exit"))

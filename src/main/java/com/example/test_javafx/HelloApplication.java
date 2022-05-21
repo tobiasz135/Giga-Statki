@@ -1,10 +1,13 @@
 package com.example.test_javafx;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -15,9 +18,9 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class HelloApplication extends Application {
-    public static Button[][] buttons = new Button[Serwer.HEIGHT][Serwer.WIDTH];
+    public static Button[][] buttons = new Button[Serwer.WIDTH][Serwer.HEIGHT];
     public static ClientReceiver clientReceiver;
-
+    
     static {
         try {
             clientReceiver = new ClientReceiver();
@@ -50,17 +53,18 @@ public class HelloApplication extends Application {
             players.add(hBox[i], i, 1);
         }
 
-        for (int i = 0; i < Serwer.HEIGHT; i++) {
-            for (int j = 0; j < Serwer.WIDTH; j++) {
+        for (int i = 0; i < Serwer.WIDTH; i++) {
+            for (int j = 0; j < Serwer.HEIGHT; j++) {
                 buttons[i][j] = new Button();
                 buttons[i][j].setMinWidth(32);
                 buttons[i][j].setMinHeight(32);
                 int i1 = i;
                 int j1 = j;
                 buttons[i][j].setOnMouseClicked(mouseEvent ->{
-                    sendMissle(j1, i1);
+                    sendMissle(i1, j1);
                 });
-                gridPane.add(buttons[i][j], j, i, 1, 1);
+                //buttons[i][j].removeEventHandler(buttons[i][j].getOnMouseClicked());
+                gridPane.add(buttons[i][j], i, j, 1, 1);
             }
         }
         border.setTop(players);
@@ -75,51 +79,69 @@ public class HelloApplication extends Application {
     }
 
     public static void drawHits(DataPackage dataPackage) {
-        for (int i = 0; i < Serwer.HEIGHT; i++) {
-            for (int j = 0; j < Serwer.WIDTH; j++) {
-                if (dataPackage.hits[i][j]) {
-                    for (int k = 0; k < dataPackage.connected_users; k++) {
-                        for (int l = 0; l < 4; l++) {
-                            if (dataPackage.gracze[k].stateks[l].vertical&&dataPackage.gracze[k].stateks[l].start_x==j)
-                            {
-                                for (int m = dataPackage.gracze[k].stateks[l].start_y; m < dataPackage.gracze[k].stateks[l].end_y; m++) {
-                                    if(m==i)
-                                    {
-                                        buttons[i][j].setText("*");
-                                    }
-                                }
+        for (int i = 0; i < Serwer.WIDTH; i++) {
+            for (int j = 0; j < Serwer.HEIGHT; j++) {
+                if (dataPackage.hits[i][j])
+                    buttons[i][j].setText("-");
+            }
 
-                            }
-                            else if(dataPackage.gracze[k].stateks[l].start_y==i)
-                            {
-                                for (int m = dataPackage.gracze[k].stateks[l].start_x; m < dataPackage.gracze[k].stateks[l].end_x; m++) {
-                                    if(m==j)
-                                    {
-                                        buttons[i][j].setText("*");
-                                    }
-                                }
-
-                            }
-
+        }
+        for (int i = 0; i < dataPackage.connected_users; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (dataPackage.gracze[i].stateks[j].vertical)
+                {
+                    for (int k = dataPackage.gracze[i].stateks[j].start_y; k < dataPackage.gracze[i].stateks[j].end_y; k++) {
+                        if (dataPackage.hits[dataPackage.gracze[i].stateks[j].start_x][k])
+                        {
+                            //if(dataPackage.gracze[i].stateks[j].owner!=clientReceiver.Client.getLocalPort())
+                                buttons[dataPackage.gracze[i].stateks[j].start_x][k].setText("*");
+                            //else{
+                                //System.out.println("before Mouse event changed");
+                                //buttons[dataPackage.gracze[i].stateks[j].start_x][k].setOnMouseClicked((mouseEvent) -> {System.out.println("Mouse event changed");});
+                            //}
                         }
-
                     }
                 }
+                else
+                {
+                    for (int k = dataPackage.gracze[i].stateks[j].start_x; k < dataPackage.gracze[i].stateks[j].end_x; k++) {
+                        if (dataPackage.hits[k][dataPackage.gracze[i].stateks[j].start_y])
+                        {
+                            //if(dataPackage.gracze[i].stateks[j].owner!=clientReceiver.Client.getLocalPort())
+                                buttons[k][dataPackage.gracze[i].stateks[j].start_y].setText("*");
+                            //else {
+                                //buttons[k][dataPackage.gracze[i].stateks[j].start_y].setOnMouseClicked((mouseEvent) -> {
+                                    //System.out.println("Mouse event changed");
+                                //});
+                                //System.out.println("before Mouse event changed");
+                            }
+                            //}
+//                        else
+//                        {
+//                            buttons[dataPackage.gracze[i].stateks[j].start_y][k].setText("-");
+//                        }
+
+                    }
+
+                }
+
             }
+
         }
+
     }
 
     public static void drawShips(DataPackage dataPackage) {
         for (int l = 0; l < dataPackage.connected_users; l++) {
             if (clientReceiver.Client.getLocalPort() == dataPackage.gracze[l].idGracza) {
             for (int k = 0; k < 4; k++) {
-                if (!dataPackage.gracze[l].stateks[k].vertical) {
-                    for (int m = dataPackage.gracze[l].stateks[k].start_x; m < dataPackage.gracze[l].stateks[k].end_x; m++) {
-                        buttons[dataPackage.gracze[l].stateks[k].start_y][m].setText("X" + k);
+                if (dataPackage.gracze[l].stateks[k].vertical) {
+                    for (int m = 0; m < dataPackage.gracze[l].stateks[k].size; m++) {
+                        buttons[dataPackage.gracze[l].stateks[k].start_x][dataPackage.gracze[l].stateks[k].start_y + m].setText("X" + k);
                     }
                 } else {
-                    for (int m = dataPackage.gracze[l].stateks[k].start_y; m < dataPackage.gracze[l].stateks[k].end_y; m++) {
-                        buttons[m][dataPackage.gracze[l].stateks[k].start_x].setText("X" + k);
+                    for (int m = 0; m < dataPackage.gracze[l].stateks[k].size; m++) {
+                        buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].setText("X" + k);
                     }
                 }
             }
@@ -133,13 +155,36 @@ public class HelloApplication extends Application {
         try {
             System.out.println("SEND NUKES " + x + ", " + y);
             clientReceiver.dos.writeObject(new ClientDataPackege(x, y));
-            clientReceiver.dos.reset();
+            //clientReceiver.dos.reset();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void disableFriendlyFire(DataPackage dataPackage, Socket socket){
+        for(int i = 0; i < dataPackage.connected_users; i++){
+            if(dataPackage.gracze[i].idGracza == socket.getLocalPort()){
+                for(int l = 0; l < 4; l++){
+                    if(!dataPackage.gracze[i].stateks[l].vertical){
+                        for(int x = 0; x < dataPackage.gracze[i].stateks[l].size; x++){
+                            buttons[dataPackage.gracze[i].stateks[l].start_x + x][dataPackage.gracze[i].stateks[l].start_y].setDisable(true);
+                            buttons[dataPackage.gracze[i].stateks[l].start_x + x][dataPackage.gracze[i].stateks[l].start_y].setOpacity(1.0);
+                        }
+                    }
+                    else{
+                        for(int x = 0; x < dataPackage.gracze[i].stateks[l].size; x++){
+                            buttons[dataPackage.gracze[i].stateks[l].start_x][dataPackage.gracze[i].stateks[l].start_y + x].setDisable(true);
+                            buttons[dataPackage.gracze[i].stateks[l].start_x][dataPackage.gracze[i].stateks[l].start_y + x].setOpacity(1.0);
+                        }
+                    }
+                }
+            }
         }
     }
 
     public static void main(String[] args) {
         launch();
     }
+
+
 }

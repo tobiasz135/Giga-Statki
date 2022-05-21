@@ -39,4 +39,25 @@ public class Statek implements Serializable {
         updateShip(alive);
         return alive;
     }
+
+    public boolean intersects(int x, int y) {
+        boolean hit = false;
+        if(!this.vertical){
+            for(int i = 0; i < this.size; i++){
+                if (this.start_x + i == x && this.start_y == y) {
+                    hit = true;
+                    break;
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < this.size; i++){
+                if (this.start_x  == x && this.start_y + i == y) {
+                    hit = true;
+                    break;
+                }
+            }
+        }
+        return hit;
+    }
 }

@@ -32,6 +32,10 @@ public class SerwerMessageHandler extends Thread implements Serializable {
                     dataPackage.hits = Serwer.hits;
                     dataPackage.turn = Serwer.gracze[Serwer.tura % Serwer.MAX_PLAYERS].idGracza;
                     s = Serwer.gracze[i].socket;
+
+                    for(int l = 0; l < 4; l++){
+                        dataPackage.gracze[i].stateks[l].owner = s.getPort();
+                    }
                     dos = Serwer.gracze[i].out;
                     dos.writeObject(dataPackage);
                     System.out.println(Serwer.CONNECTED_USERS);
@@ -46,6 +50,7 @@ public class SerwerMessageHandler extends Thread implements Serializable {
                     s.close();
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                    Serwer.CONNECTED_USERS--;
                 }
                 //break;
             }
