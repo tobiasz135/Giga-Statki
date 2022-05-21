@@ -28,8 +28,9 @@ public class ClientReceiver extends Thread implements Serializable {
                 System.out.println(dataPackage);
                 if (dataPackage != null) {
                     //System.out.println("Odebrano: " + dataPackage.gracze.get(0).getNick());
-                    System.out.println(dataPackage.turn);
+                    System.out.println(dataPackage.connected_users);
                     System.out.println(Client.getLocalPort());
+                    System.out.println(dataPackage.gracze[0].idGracza);
                 }
                 HelloApplication.drawShips(dataPackage);
 

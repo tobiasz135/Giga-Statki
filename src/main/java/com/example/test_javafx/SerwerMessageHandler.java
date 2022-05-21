@@ -7,36 +7,47 @@ import java.util.List;
 
 public class SerwerMessageHandler extends Thread implements Serializable {
     ObjectOutputStream dos;
+    Socket s;
+    //public static int round = ;
     //List<Socket> clients;
 
     public void run() {
         //String received;
         //String timestamp;
+
         DataPackage dataPackage = null;
         try {
             dataPackage = new DataPackage();
         } catch (NotSerializableException e) {
             e.printStackTrace();
         }
-        //Scanner scn = new Scanner(System.in);
 
+        //Scanner scn = new Scanner(System.in);
         while (true) {
+
             //clients = Serwer.clients;
             try {
                 for(int i = 0; i < Serwer.CONNECTED_USERS; i++){
+                    dataPackage.connected_users = Serwer.CONNECTED_USERS;
+                    dataPackage.hits = Serwer.hits;
+                    dataPackage.turn = Serwer.gracze[Serwer.tura % Serwer.MAX_PLAYERS].idGracza;
+                    s = Serwer.gracze[i].socket;
                     dos = Serwer.gracze[i].out;
                     dos.writeObject(dataPackage);
                     System.out.println(Serwer.CONNECTED_USERS);
-                    //dos.reset();
+                    dos.reset();
 
                 }
                 sleep(1000);
 
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
-                break;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                try {
+                    s.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                //break;
             }
 
         }

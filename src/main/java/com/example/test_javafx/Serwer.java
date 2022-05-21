@@ -50,7 +50,8 @@ public class Serwer extends Thread{
                 //clients.add(s);
 
                 System.out.println("A new client is connected : " + s);
-                if(CONNECTED_USERS == MAX_PLAYERS - 1){
+                if(CONNECTED_USERS >= MAX_PLAYERS ){
+                    s.close();
                     System.out.println("Server is full");
                     continue;
                 }
@@ -59,7 +60,7 @@ public class Serwer extends Thread{
                 gracze[CONNECTED_USERS].out = new ObjectOutputStream(s.getOutputStream());
                 gracze[CONNECTED_USERS].in = new ObjectInputStream(s.getInputStream());
                 gracze[CONNECTED_USERS].socket = s;
-                gracze[CONNECTED_USERS].idGracza = s.getLocalPort();
+                gracze[CONNECTED_USERS].idGracza = s.getPort();
 
 
                 System.out.println("Assigning new thread for this client");
@@ -76,6 +77,7 @@ public class Serwer extends Thread{
             catch (Exception e){
                 s.close();
                 CONNECTED_USERS--;
+                System.out.println("USER DISCONNECTED - " + CONNECTED_USERS);
                 e.printStackTrace();
             }
         }
@@ -96,7 +98,7 @@ public class Serwer extends Thread{
                 if(o){  // horizontal
                     if(x + shipSize < WIDTH){
                         for(int k = 0; k < shipSize; k++){
-                            if(!shipPlacement[x + k][y]){
+                            if(!shipPlacement[x + k][y] && !free){
                                 free = true;
                             }
                             else
@@ -118,6 +120,7 @@ public class Serwer extends Thread{
                             gracze[i].stateks[l].owner = gracze[i].idGracza;
                             gracze[i].stateks[l].size = shipSize;
                             gracze[i].stateks[l].sank = 0;
+                            gracze[i].stateks[l].vertical=false;
                             shipSize--;
                         }
                     }
@@ -129,7 +132,7 @@ public class Serwer extends Thread{
                 else{   // vertical
                     if(y + shipSize < HEIGHT){
                         for(int k = 0; k < shipSize; k++){
-                            if(!shipPlacement[x][y + k]){
+                            if(!shipPlacement[x][y + k] && !free){
                                 free = true;
                             }
                             else
@@ -151,6 +154,7 @@ public class Serwer extends Thread{
                             gracze[i].stateks[l].owner = gracze[i].idGracza;
                             gracze[i].stateks[l].size = shipSize;
                             gracze[i].stateks[l].sank = 0;
+                            gracze[i].stateks[l].vertical=true;
                             shipSize--;
                         }
                     }

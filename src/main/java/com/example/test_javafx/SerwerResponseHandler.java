@@ -20,8 +20,11 @@ public class SerwerResponseHandler extends Thread {
 
         while (true) {
             try {
-                Object obj = dis.readObject();
-                System.out.print("DEBUG");
+                ClientDataPackege obj = (ClientDataPackege) dis.readObject();
+                //System.out.print("DEBUG");
+                Serwer.hits[obj.y][obj.x]=true;
+                System.out.println(obj.x + ", " + obj.y);
+                Serwer.tura++;
                 /*if(received.equals("Exit"))
                 {
                     System.out.println("Closing this connection : " + s);
@@ -34,6 +37,12 @@ public class SerwerResponseHandler extends Thread {
 
             } catch (IOException e) {
                 e.printStackTrace();
+                try {
+                    s.close();
+                    Serwer.CONNECTED_USERS--;
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 break;
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();

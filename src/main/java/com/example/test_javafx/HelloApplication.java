@@ -12,13 +12,23 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.Socket;
 
 public class HelloApplication extends Application {
     public static Button[][] buttons = new Button[Serwer.HEIGHT][Serwer.WIDTH];
+    public static ClientReceiver clientReceiver;
+
+    static {
+        try {
+            clientReceiver = new ClientReceiver();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
-        ClientReceiver clientReceiver = new ClientReceiver();
+
         clientReceiver.start();
         //FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         BorderPane border = new BorderPane();
@@ -45,6 +55,11 @@ public class HelloApplication extends Application {
                 buttons[i][j] = new Button();
                 buttons[i][j].setMinWidth(32);
                 buttons[i][j].setMinHeight(32);
+                int i1 = i;
+                int j1 = j;
+                buttons[i][j].setOnMouseClicked(mouseEvent ->{
+                    sendMissle(j1, i1);
+                });
                 gridPane.add(buttons[i][j], j, i, 1, 1);
             }
         }
@@ -59,26 +74,6 @@ public class HelloApplication extends Application {
 
     }
 
-    public static void drawShips(ClientReceiver clientReceiver) {
-        for (int l = 0; l < Serwer.CONNECTED_USERS; l++) {
-            //if (Serwer.gracze[l].socket.getLocalPort() == clientReceiver.Client.getLocalPort()) {
-                for (int k = 0; k < 4; k++) {
-                    if (!Serwer.gracze[l].stateks[k].vertical) {
-                        for (int m = Serwer.gracze[l].stateks[k].start_x; m < Serwer.gracze[l].stateks[k].end_x; m++) {
-                            buttons[Serwer.gracze[l].stateks[k].start_y][m].setText("X");
-                        }
-                    } else {
-                        for (int m = Serwer.gracze[l].stateks[k].start_y; m < Serwer.gracze[l].stateks[k].end_y; m++) {
-                            buttons[Serwer.gracze[l].stateks[k].start_x][m].setText("X");
-                        }
-                    }
-                }
-            //}
-
-
-        }
-    }
-
     public static void drawHits(ClientReceiver clientReceiver) {
         for (int i = 0; i < Serwer.HEIGHT; i++) {
             for (int j = 0; j < Serwer.WIDTH; j++) {
@@ -89,33 +84,33 @@ public class HelloApplication extends Application {
         }
     }
 
-    public static void drawShips(ClientReceiver clientReceiver) {
-        for (int l = 0; l < Serwer.CONNECTED_USERS; l++) {
-            //if (Serwer.gracze[l].socket.getLocalPort() == clientReceiver.Client.getLocalPort()) {
-                for (int k = 0; k < 4; k++) {
-                    if (!Serwer.gracze[l].stateks[k].vertical) {
-                        for (int m = Serwer.gracze[l].stateks[k].start_x; m < Serwer.gracze[l].stateks[k].end_x; m++) {
-                            buttons[Serwer.gracze[l].stateks[k].start_y][m].setText("X");
-                        }
-                    } else {
-                        for (int m = Serwer.gracze[l].stateks[k].start_y; m < Serwer.gracze[l].stateks[k].end_y; m++) {
-                            buttons[Serwer.gracze[l].stateks[k].start_x][m].setText("X");
-                        }
+    public static void drawShips(DataPackage dataPackage) {
+        for (int l = 0; l < dataPackage.connected_users; l++) {
+            if (clientReceiver.Client.getLocalPort() == dataPackage.gracze[l].idGracza) {
+            for (int k = 0; k < 4; k++) {
+                if (!dataPackage.gracze[l].stateks[k].vertical) {
+                    for (int m = dataPackage.gracze[l].stateks[k].start_x; m < dataPackage.gracze[l].stateks[k].end_x; m++) {
+                        buttons[dataPackage.gracze[l].stateks[k].start_y][m].setText("X" + k);
+                    }
+                } else {
+                    for (int m = dataPackage.gracze[l].stateks[k].start_y; m < dataPackage.gracze[l].stateks[k].end_y; m++) {
+                        buttons[m][dataPackage.gracze[l].stateks[k].start_x].setText("X" + k);
                     }
                 }
-            //}
+            }
+            }
 
 
         }
     }
 
-    public static void drawHits(ClientReceiver clientReceiver) {
-        for (int i = 0; i < Serwer.HEIGHT; i++) {
-            for (int j = 0; j < Serwer.WIDTH; j++) {
-                if (Serwer.hits[i][j]) {
-                    //Jakiś overlay
-                }
-            }
+    public static void sendMissle(int x, int y){
+        try {
+            System.out.println("SEND NUKES " + x + ", " + y);
+            clientReceiver.dos.writeObject(new ClientDataPackege(x, y));
+            clientReceiver.dos.reset();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
