@@ -15,7 +15,8 @@ public class Serwer extends Thread{
     public static int tura;
     public static boolean[][] hits = new boolean[WIDTH][HEIGHT];
     public static boolean[][] shipPlacement = new boolean[WIDTH][HEIGHT];
-    public static List<Socket> clients = new ArrayList<>();
+    public static int CONNECTED_USERS = 0;
+    //public static List<Socket> clients = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         gracze[0] = new Gracz();

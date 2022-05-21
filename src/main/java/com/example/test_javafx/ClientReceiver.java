@@ -8,7 +8,7 @@ public class ClientReceiver extends Thread implements Serializable {
     int port=5056;
     Socket Client=new Socket(ip,port);
     ObjectInputStream dis = new ObjectInputStream(Client.getInputStream());
-    //ObjectOutputStream dos = new ObjectOutputStream(Client.getOutputStream());
+    ObjectOutputStream dos = new ObjectOutputStream(Client.getOutputStream());
 
 
     public ClientReceiver() throws IOException {
@@ -28,7 +28,10 @@ public class ClientReceiver extends Thread implements Serializable {
                 if (dataPackage != null) {
                     //System.out.println("Odebrano: " + dataPackage.gracze.get(0).getNick());
                     System.out.println(dataPackage.turn);
+                    System.out.println(Client.getLocalPort());
                 }
+                HelloApplication.drawShips(this);
+
                 //dis.reset();
             }
         } catch (Exception e) {

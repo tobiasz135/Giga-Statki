@@ -6,7 +6,7 @@ import java.util.List;
 
 public class SerwerMessageHandler extends Thread implements Serializable {
     ObjectOutputStream dos;
-    List<Socket> clients;
+    //List<Socket> clients;
 
     public void run() {
         //String received;
@@ -25,7 +25,7 @@ public class SerwerMessageHandler extends Thread implements Serializable {
                 for(int i = 0; i < clients.size(); i++){
                     dos = Serwer.gracze[i].out;
                     dos.writeObject(dataPackage);
-                    System.out.println("Serwer do Klient " + clients.get(i).getPort());
+                    System.out.println(Serwer.CONNECTED_USERS);
                     //dos.reset();
 
                 }

@@ -24,6 +24,7 @@ public class SerwerClientHandler extends Thread {
         Thread clientResponseHandler = new SerwerResponseHandler(this.dis, this.s);
         //Thread clientMessageHandler = new MessageHandler(this.dos, this.s);
         clientResponseHandler.start();
+        //Serwer.CONNECTED_USERS++;
         //clientMessageHandler.start();
         try {
             clientResponseHandler.join();
