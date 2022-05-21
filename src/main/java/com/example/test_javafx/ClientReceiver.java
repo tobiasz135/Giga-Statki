@@ -31,7 +31,7 @@ public class ClientReceiver extends Thread implements Serializable {
                     System.out.println(dataPackage.turn);
                     System.out.println(Client.getLocalPort());
                 }
-                HelloApplication.drawShips(this);
+                HelloApplication.drawShips(dataPackage);
 
                 //dis.reset();
             }
