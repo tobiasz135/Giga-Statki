@@ -84,6 +84,7 @@ public class Serwer extends Thread{
 
     }
 
+
     private static void generateShips() {
         Random random_x = new Random();
         Random random_y = new Random();

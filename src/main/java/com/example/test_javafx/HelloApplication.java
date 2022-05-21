@@ -74,11 +74,36 @@ public class HelloApplication extends Application {
 
     }
 
-    public static void drawHits(ClientReceiver clientReceiver) {
+    public static void drawHits(DataPackage dataPackage) {
         for (int i = 0; i < Serwer.HEIGHT; i++) {
             for (int j = 0; j < Serwer.WIDTH; j++) {
-                if (Serwer.hits[i][j]) {
-                    //Jakiś overlay
+                if (dataPackage.hits[i][j]) {
+                    for (int k = 0; k < dataPackage.connected_users; k++) {
+                        for (int l = 0; l < 4; l++) {
+                            if (dataPackage.gracze[k].stateks[l].vertical&&dataPackage.gracze[k].stateks[l].start_x==j)
+                            {
+                                for (int m = dataPackage.gracze[k].stateks[l].start_y; m < dataPackage.gracze[k].stateks[l].end_y; m++) {
+                                    if(m==i)
+                                    {
+                                        buttons[i][j].setText("*");
+                                    }
+                                }
+
+                            }
+                            else if(dataPackage.gracze[k].stateks[l].start_y==i)
+                            {
+                                for (int m = dataPackage.gracze[k].stateks[l].start_x; m < dataPackage.gracze[k].stateks[l].end_x; m++) {
+                                    if(m==j)
+                                    {
+                                        buttons[i][j].setText("*");
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                    }
                 }
             }
         }
