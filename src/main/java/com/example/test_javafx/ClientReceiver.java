@@ -43,8 +43,8 @@ public class ClientReceiver extends Thread implements Serializable {
                 Platform.runLater(new Runnable(){
                     @Override
                     public void run() {
-                        HelloApplication.disableFriendlyFire(dataPackage, Client);
                         HelloApplication.toggleInput(dataPackage, Client);
+                        HelloApplication.disableFriendlyFire(dataPackage, Client);
                         HelloApplication.drawShips(dataPackage);
                         HelloApplication.drawHits(dataPackage);
                         System.out.println(dataPackage.connected_users);
