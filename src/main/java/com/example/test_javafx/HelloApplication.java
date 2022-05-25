@@ -82,7 +82,8 @@ public class HelloApplication extends Application {
         for (int i = 0; i < Serwer.WIDTH; i++) {
             for (int j = 0; j < Serwer.HEIGHT; j++) {
                 if (dataPackage.hits[i][j])
-                    buttons[i][j].setText("-");
+                    buttons[i][j].setGraphic(new ImageView(String.valueOf(HelloApplication.class.getResource("ships_img/explosion/exp.gif"))));
+                    //buttons[i][j].setText("-");
             }
 
         }
@@ -92,7 +93,10 @@ public class HelloApplication extends Application {
                     for (int k = dataPackage.gracze[i].stateks[j].start_y; k < dataPackage.gracze[i].stateks[j].end_y; k++) {
                         if (dataPackage.hits[dataPackage.gracze[i].stateks[j].start_x][k]) {
                             //if(dataPackage.gracze[i].stateks[j].owner!=clientReceiver.Client.getLocalPort())
-                            buttons[dataPackage.gracze[i].stateks[j].start_x][k].setText("*");
+                            //buttons[dataPackage.gracze[i].stateks[j].start_x][k].setText("*");
+                            buttons[dataPackage.gracze[i].stateks[j].start_x][k].
+                                    setGraphic(new ImageView(String.valueOf(HelloApplication.class.
+                                            getResource("ships_img/explosion/exp.gif"))));
                             //else{
                             //System.out.println("before Mouse event changed");
                             //buttons[dataPackage.gracze[i].stateks[j].start_x][k].setOnMouseClicked((mouseEvent) -> {System.out.println("Mouse event changed");});
@@ -103,7 +107,10 @@ public class HelloApplication extends Application {
                     for (int k = dataPackage.gracze[i].stateks[j].start_x; k < dataPackage.gracze[i].stateks[j].end_x; k++) {
                         if (dataPackage.hits[k][dataPackage.gracze[i].stateks[j].start_y]) {
                             //if(dataPackage.gracze[i].stateks[j].owner!=clientReceiver.Client.getLocalPort())
-                            buttons[k][dataPackage.gracze[i].stateks[j].start_y].setText("*");
+                            //buttons[k][dataPackage.gracze[i].stateks[j].start_y].setText("*");
+                            buttons[k][dataPackage.gracze[i].stateks[j].start_y].
+                                    setGraphic(new ImageView(String.valueOf(HelloApplication.class.
+                                            getResource("ships_img/explosion/exp.gif"))));
                             //else {
                             //buttons[k][dataPackage.gracze[i].stateks[j].start_y].setOnMouseClicked((mouseEvent) -> {
                             //System.out.println("Mouse event changed");
