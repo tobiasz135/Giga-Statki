@@ -234,6 +234,13 @@ public class HelloApplication extends Application {
         if(dataPackage.turn == socket.getLocalPort()){
             for(int i = 0; i < Serwer.WIDTH; i++){
                 for(int j = 0; j < Serwer.HEIGHT; j++){
+                    String PartNumber = new String("00");
+                    PartNumber += (j * Serwer.WIDTH) + i + 1;
+                    if(PartNumber.length() > 3) {
+                        PartNumber = PartNumber.substring(PartNumber.length() - 3);
+                    }
+                    buttons[i][j].setGraphic(new ImageView(String.valueOf(HelloApplication.class.
+                            getResource("ships_img/background/parts/image_part_" + PartNumber + ".png"))));
                     buttons[i][j].setDisable(false);
                 }
             }
