@@ -90,20 +90,21 @@ public class Serwer extends Thread{
         Random random_y = new Random();
         Random orient = new Random();
         for(int i = 0; i < MAX_PLAYERS; i++){
-            boolean free = false;
+
             int shipSize = 5;
             for(int l = 0; l < 4;l++){
+                boolean free = true;
                 boolean o = orient.nextBoolean();
                 int x = random_x.nextInt(WIDTH);
                 int y = random_y.nextInt(HEIGHT);
                 if(o){  // horizontal
                     if(x + shipSize < WIDTH){
                         for(int k = 0; k < shipSize; k++){
-                            if(!shipPlacement[x + k][y] && !free){
-                                free = true;
-                            }
-                            else
+                            if(shipPlacement[x + k][y] && free){
                                 free = false;
+                                //break;
+                            }
+
                         }
                         if(!free){
                             l--;
@@ -133,11 +134,11 @@ public class Serwer extends Thread{
                 else{   // vertical
                     if(y + shipSize < HEIGHT){
                         for(int k = 0; k < shipSize; k++){
-                            if(!shipPlacement[x][y + k] && !free){
-                                free = true;
-                            }
-                            else
+                            if(shipPlacement[x][y + k] && free){
                                 free = false;
+                                //break;
+                            }
+
                         }
                         if(!free){
                             l--;

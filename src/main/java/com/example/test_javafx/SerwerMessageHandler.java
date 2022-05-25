@@ -30,7 +30,7 @@ public class SerwerMessageHandler extends Thread implements Serializable {
                 for(int i = 0; i < Serwer.CONNECTED_USERS; i++){
                     dataPackage.connected_users = Serwer.CONNECTED_USERS;
                     dataPackage.hits = Serwer.hits;
-                    dataPackage.turn = Serwer.gracze[Serwer.tura % Serwer.MAX_PLAYERS].idGracza;
+                    dataPackage.turn = Serwer.gracze[Serwer.tura % Serwer.CONNECTED_USERS].idGracza;
                     s = Serwer.gracze[i].socket;
 
                     for(int l = 0; l < 4; l++){
