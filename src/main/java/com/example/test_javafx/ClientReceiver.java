@@ -38,10 +38,13 @@ public class ClientReceiver extends Thread implements Serializable {
                     System.out.println(Client.getLocalPort());
                     System.out.println(dataPackage.gracze[0].idGracza);
                 }
+                System.out.println("TURN: " + dataPackage.turn);
+                System.out.println("MY PORT:" + Client.getLocalPort());
                 Platform.runLater(new Runnable(){
                     @Override
                     public void run() {
                         HelloApplication.disableFriendlyFire(dataPackage, Client);
+                        HelloApplication.toggleInput(dataPackage, Client);
                         HelloApplication.drawShips(dataPackage);
                         HelloApplication.drawHits(dataPackage);
                         System.out.println(dataPackage.connected_users);

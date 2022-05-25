@@ -182,6 +182,23 @@ public class HelloApplication extends Application {
         }
     }
 
+    public static void toggleInput(DataPackage dataPackage, Socket socket){
+        if(dataPackage.turn == socket.getLocalPort()){
+            for(int i = 0; i < Serwer.WIDTH; i++){
+                for(int j = 0; j < Serwer.HEIGHT; j++){
+                    buttons[i][j].setDisable(false);
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < Serwer.WIDTH; i++){
+                for(int j = 0; j < Serwer.HEIGHT; j++){
+                    buttons[i][j].setDisable(true);
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         launch();
     }
