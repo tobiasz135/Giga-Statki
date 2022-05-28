@@ -1,6 +1,7 @@
 package com.example.test_javafx;
 
 import javafx.application.Platform;
+import javafx.scene.control.Label;
 
 import java.io.*;
 import java.net.Socket;
@@ -17,6 +18,17 @@ public class ClientReceiver extends Thread implements Serializable {
     public ClientReceiver() throws IOException {
         //super("Problem z polaczeniem");
         //dis = new ObjectInputStream(Client.getInputStream());
+    }
+    public void updateScore(){
+        for (int i = 0; i < dataPackage.connected_users; i++) {
+            HelloApplication.score[i]=4;
+            for (int j = 0; j < 4; j++) {
+                if(!dataPackage.gracze[i].stateks[j].isAlive(dataPackage.hits))
+                    HelloApplication.score[i]--;
+            }
+            HelloApplication.labels[i].setText("Statki: "+ HelloApplication.score[i]);
+            System.out.println(i+": "+HelloApplication.score[i]);
+        }
     }
 
 
@@ -47,6 +59,7 @@ public class ClientReceiver extends Thread implements Serializable {
                         HelloApplication.disableFriendlyFire(dataPackage, Client);
                         HelloApplication.drawShips(dataPackage);
                         HelloApplication.drawHits(dataPackage);
+                        updateScore();
                         System.out.println(dataPackage.connected_users);
                     }
                 });

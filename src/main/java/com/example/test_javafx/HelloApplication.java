@@ -5,6 +5,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -20,6 +23,8 @@ import java.net.Socket;
 public class HelloApplication extends Application {
     public static Button[][] buttons = new Button[Serwer.WIDTH][Serwer.HEIGHT];
     public static ClientReceiver clientReceiver;
+    public static int[] score=new int[3];
+    public static Label[] labels=new Label[3];
 
     static {
         try {
@@ -31,6 +36,9 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        for (int i = 0; i < 3; i++) {
+            labels[i]=new Label("Statki: 4");
+        }
 
         clientReceiver.start();
         //FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
@@ -50,26 +58,31 @@ public class HelloApplication extends Application {
             imageView[i] = new ImageView(image);
             hBox[i] = new HBox(imageView[i]);
             hBox[i].setPrefWidth(170);
-            players.add(hBox[i], i, 1);
+            players.add(hBox[i], i, 0);
         }
 
         for (int i = 0; i < Serwer.WIDTH; i++) {
             for (int j = 0; j < Serwer.HEIGHT; j++) {
                 buttons[i][j] = new Button();
                 buttons[i][j].setMinWidth(32);
+                buttons[i][j].setMaxWidth(32);
                 buttons[i][j].setMinHeight(32);
+                buttons[i][j].setMaxHeight(32);
                 int i1 = i;
                 int j1 = j;
                 buttons[i][j].setOnMouseClicked(mouseEvent -> {
                     sendMissle(i1, j1);
                 });
                 //buttons[i][j].removeEventHandler(buttons[i][j].getOnMouseClicked());
-                gridPane.add(buttons[i][j], i, j, 1, 1);
+                gridPane.add(buttons[i][j], i, j+1, 1, 1);
             }
+        }
+        for (int i = 0; i < 3; i++) {
+            players.add(labels[i],i,1);
         }
         border.setTop(players);
         border.setCenter(gridPane);
-        Scene scene = new Scene(border, 512, 458);
+        Scene scene = new Scene(border, Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         //Scene scene2 = new Scene(gridPane, 512, 500);
         stage.setTitle("Statki");
         stage.setScene(scene);

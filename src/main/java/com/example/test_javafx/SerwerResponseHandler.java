@@ -13,22 +13,24 @@ public class SerwerResponseHandler extends Thread {
         this.dis = dis;
         this.s = s;
     }
-    boolean checkHits(int x,int y){
+
+    boolean checkHits(int x, int y) {
         for (int i = 0; i < Serwer.CONNECTED_USERS; i++) {
             for (int j = 0; j < 4; j++) {
-                if (!Serwer.gracze[i].stateks[j].vertical)
-                {
+                if (!Serwer.gracze[i].stateks[j].vertical) {
                     for (int k = Serwer.gracze[i].stateks[j].start_x; k < Serwer.gracze[i].stateks[j].end_x; k++) {
-                        if(x==k&&y==Serwer.gracze[i].stateks[j].start_y)
+                        if (x == k && y == Serwer.gracze[i].stateks[j].start_y) {
                             return true;
+                        }
+
 
                     }
-                }
-                else
-                {
+                } else {
                     for (int k = Serwer.gracze[i].stateks[j].start_y; k < Serwer.gracze[i].stateks[j].end_y; k++) {
-                        if(y==k&&x==Serwer.gracze[i].stateks[j].start_x)
+                        if (y == k && x == Serwer.gracze[i].stateks[j].start_x) {
                             return true;
+                        }
+
 
                     }
                 }
@@ -43,11 +45,11 @@ public class SerwerResponseHandler extends Thread {
 
         while (true) {
             try {
-                ClientDataPackege obj = (ClientDataPackege) dis.readObject();
+
                 //System.out.print("DEBUG");
                 Serwer.hits[obj.x][obj.y]=true;
                 System.out.println(obj.x + ", " + obj.y);
-                if(!checkHits(obj.x,obj.y))
+                if (!checkHits(obj.x, obj.y))
                     Serwer.tura++;
                 /*if(received.equals("Exit"))
                 {
@@ -74,5 +76,36 @@ public class SerwerResponseHandler extends Thread {
 
         }
 
+    }
+
+    private boolean stillAlive() {
+        Gracz gracz = Serwer.gracze[Serwer.tura % Serwer.CONNECTED_USERS];
+        boolean isAlive = false;
+        for (int i = 0; i < 4; i++) {
+            boolean shipSank = true;
+            for (int l = 0; l < gracz.stateks[i].size; l++) {
+                if (gracz.stateks[i].vertical) {
+                    if (!Serwer.hits[gracz.stateks[i].start_x][gracz.stateks[i].start_y + l])
+                        shipSank = false;
+                }
+                    else {
+                        if (!Serwer.hits[gracz.stateks[i].start_x + l][gracz.stateks[i].start_y]) {
+                            shipSank = false;
+                        }
+                    }
+
+            }
+            System.out.println("STATEK #" + i + " " + shipSank);
+            if (shipSank)
+                gracz.stateks[i].sank = 1;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            if (gracz.stateks[i].sank == 0) {
+                isAlive = true;
+            }
+        }
+        gracz.dead=!isAlive;
+        return isAlive;
     }
 }
