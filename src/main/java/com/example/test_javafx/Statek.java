@@ -19,19 +19,19 @@ public class Statek implements Serializable {
     }
 
     public boolean isAlive(boolean[][] hits){
-        boolean alive = true;
+        boolean alive = false;
         if(!this.vertical){
             for(int i = 0; i < this.size; i++){
-                if (hits[this.start_x + i][this.start_y]) {
-                    alive = false;
+                if (!hits[this.start_x + i][this.start_y]) {
+                    alive = true;
                     break;
                 }
             }
         }
         else{
             for(int i = 0; i < this.size; i++){
-                if (hits[this.start_x][this.start_y + i]) {
-                    alive = false;
+                if (!hits[this.start_x][this.start_y + i]) {
+                    alive = true;
                     break;
                 }
             }
