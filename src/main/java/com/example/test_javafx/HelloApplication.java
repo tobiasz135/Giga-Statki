@@ -182,7 +182,6 @@ public class HelloApplication extends Application {
                                 case 3:
                                     final ImageView selectedImage = new ImageView(String.valueOf(HelloApplication.class.
                                             getResource("ships_img/destroyer/parts/image_part_00" + (m + 1) + ".png")));
-                                    selectedImage.setRotate(90);
                                     buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].
                                             setGraphic(selectedImage);
                                     break;
@@ -255,6 +254,13 @@ public class HelloApplication extends Application {
         else{
             for(int i = 0; i < Serwer.WIDTH; i++){
                 for(int j = 0; j < Serwer.HEIGHT; j++){
+                    String PartNumber = new String("00");
+                    PartNumber += (j * Serwer.WIDTH) + i + 1;
+                    if(PartNumber.length() > 3) {
+                        PartNumber = PartNumber.substring(PartNumber.length() - 3);
+                    }
+                    buttons[i][j].setGraphic(new ImageView(String.valueOf(HelloApplication.class.
+                            getResource("ships_img/background/parts/image_part_" + PartNumber + ".png"))));
                     buttons[i][j].setDisable(true);
                 }
             }
