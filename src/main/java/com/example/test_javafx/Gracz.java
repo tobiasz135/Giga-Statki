@@ -11,6 +11,7 @@ public class Gracz implements Serializable {
     transient ObjectInputStream in;
     transient ObjectOutputStream out;
     transient Socket socket;
+    public int color;
 
     Gracz(){
         stateks = new Statek[4];

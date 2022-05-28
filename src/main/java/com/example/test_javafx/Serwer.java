@@ -61,6 +61,12 @@ public class Serwer extends Thread{
                 gracze[CONNECTED_USERS].in = new ObjectInputStream(s.getInputStream());
                 gracze[CONNECTED_USERS].socket = s;
                 gracze[CONNECTED_USERS].idGracza = s.getPort();
+                if (CONNECTED_USERS==0)
+                    gracze[CONNECTED_USERS].color=1;
+                if (CONNECTED_USERS==1)
+                    gracze[CONNECTED_USERS].color=2;
+                if (CONNECTED_USERS==2)
+                    gracze[CONNECTED_USERS].color=3;
 
 
                 System.out.println("Assigning new thread for this client");
