@@ -47,7 +47,13 @@ public class SerwerResponseHandler extends Thread {
             try {
 
                 //System.out.print("DEBUG");
-                Serwer.hits[obj.x][obj.y]=true;
+                System.out.println(stillAlive());
+                if (!stillAlive()) {
+                    Serwer.tura++;
+                    continue;
+                }
+                ClientDataPackege obj = (ClientDataPackege) dis.readObject();
+                Serwer.hits[obj.x][obj.y] = true;
                 System.out.println(obj.x + ", " + obj.y);
                 if (!checkHits(obj.x, obj.y))
                     Serwer.tura++;
