@@ -13,6 +13,29 @@ public class SerwerResponseHandler extends Thread {
         this.dis = dis;
         this.s = s;
     }
+    boolean checkHits(int x,int y){
+        for (int i = 0; i < Serwer.CONNECTED_USERS; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (!Serwer.gracze[i].stateks[j].vertical)
+                {
+                    for (int k = Serwer.gracze[i].stateks[j].start_x; k < Serwer.gracze[i].stateks[j].end_x; k++) {
+                        if(x==k&&y==Serwer.gracze[i].stateks[j].start_y)
+                            return true;
+
+                    }
+                }
+                else
+                {
+                    for (int k = Serwer.gracze[i].stateks[j].start_y; k < Serwer.gracze[i].stateks[j].end_y; k++) {
+                        if(y==k&&x==Serwer.gracze[i].stateks[j].start_x)
+                            return true;
+
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     public void run() {
         String received;
@@ -24,7 +47,8 @@ public class SerwerResponseHandler extends Thread {
                 //System.out.print("DEBUG");
                 Serwer.hits[obj.x][obj.y]=true;
                 System.out.println(obj.x + ", " + obj.y);
-                Serwer.tura++;
+                if(!checkHits(obj.x,obj.y))
+                    Serwer.tura++;
                 /*if(received.equals("Exit"))
                 {
                     System.out.println("Closing this connection : " + s);
