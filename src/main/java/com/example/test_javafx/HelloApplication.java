@@ -1,16 +1,13 @@
 package com.example.test_javafx;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -147,67 +144,64 @@ public class HelloApplication extends Application {
     }
 
     public static void drawShips(DataPackage dataPackage) {
+        String userColor = null;
         for (int l = 0; l < dataPackage.connected_users; l++) {
             if (clientReceiver.Client.getLocalPort() == dataPackage.gracze[l].idGracza) {
+                switch (dataPackage.gracze[l].color) {
+                    case 1 -> userColor = "red";
+                    case 2 -> userColor = "green";
+                    case 3 -> userColor = "fushia";
+                }
                 for (int k = 0; k < 4; k++) {
                     if (dataPackage.gracze[l].stateks[k].vertical) {
                         for (int m = 0; m < dataPackage.gracze[l].stateks[k].size; m++) {
                             switch (dataPackage.gracze[l].stateks[k].size) {
-                                case 2:
+                                case 2 -> {
                                     final ImageView selectedImage1 = new ImageView(String.valueOf(HelloApplication.class.
-                                            getResource("ships_img/littoral_combat_ship/parts/image_part_00" + (m + 1) + ".png")));
+                                            getResource("ships_img/littoral_combat_ship/" + userColor + "Parts/image_part_00" + (m + 1) + ".png")));
                                     selectedImage1.setRotate(90);
                                     buttons[dataPackage.gracze[l].stateks[k].start_x][dataPackage.gracze[l].stateks[k].start_y + m].
                                             setGraphic(selectedImage1);
-                                    break;
-                                case 3:
+                                }
+                                case 3 -> {
                                     final ImageView selectedImage2 = new ImageView(String.valueOf(HelloApplication.class.
-                                            getResource("ships_img/destroyer/parts/image_part_00" + (m + 1) + ".png")));
+                                            getResource("ships_img/destroyer/" + userColor + "Parts/image_part_00" + (m + 1) + ".png")));
                                     selectedImage2.setRotate(90);
                                     buttons[dataPackage.gracze[l].stateks[k].start_x][dataPackage.gracze[l].stateks[k].start_y + m].
                                             setGraphic(selectedImage2);
-                                    break;
-                                case 4:
+                                }
+                                case 4 -> {
                                     final ImageView selectedImage3 = new ImageView(String.valueOf(HelloApplication.class.
-                                            getResource("ships_img/battleship/parts/image_part_00" + (m + 1) + ".png")));
+                                            getResource("ships_img/battleship/" + userColor + "Parts/image_part_00" + (m + 1) + ".png")));
                                     selectedImage3.setRotate(90);
                                     buttons[dataPackage.gracze[l].stateks[k].start_x][dataPackage.gracze[l].stateks[k].start_y + m].
                                             setGraphic(selectedImage3);
-                                    break;
-                                case 5:
+                                }
+                                case 5 -> {
                                     final ImageView selectedImage4 = new ImageView(String.valueOf(HelloApplication.class.
-                                            getResource("ships_img/aircraft_carrier/parts/image_part_00" + (m + 1) + ".png")));
+                                            getResource("ships_img/aircraft_carrier/" + userColor + "Parts/image_part_00" + (m + 1) + ".png")));
                                     selectedImage4.setRotate(90);
                                     buttons[dataPackage.gracze[l].stateks[k].start_x][dataPackage.gracze[l].stateks[k].start_y + m].
                                             setGraphic(selectedImage4);
-                                    break;
+                                }
                             }
                             //buttons[dataPackage.gracze[l].stateks[k].start_x][dataPackage.gracze[l].stateks[k].start_y + m].setText("X" + k);
                         }
                     } else {
                         for (int m = 0; m < dataPackage.gracze[l].stateks[k].size; m++) {
                             switch (dataPackage.gracze[l].stateks[k].size) {
-                                case 2:
-                                    buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].
-                                            setGraphic(new ImageView(String.valueOf(HelloApplication.class.
-                                                    getResource("ships_img/littoral_combat_ship/parts/image_part_00" + (m + 1) + ".png"))));
-                                    break;
-                                case 3:
-                                    final ImageView selectedImage = new ImageView(String.valueOf(HelloApplication.class.
-                                            getResource("ships_img/destroyer/parts/image_part_00" + (m + 1) + ".png")));
-                                    buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].
-                                            setGraphic(selectedImage);
-                                    break;
-                                case 4:
-                                    buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].
-                                            setGraphic(new ImageView(String.valueOf(HelloApplication.class.
-                                                    getResource("ships_img/battleship/parts/image_part_00" + (m + 1) + ".png"))));
-                                    break;
-                                case 5:
-                                    buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].
-                                            setGraphic(new ImageView(String.valueOf(HelloApplication.class.
-                                                    getResource("ships_img/aircraft_carrier/parts/image_part_00" + (m + 1) + ".png"))));
-                                    break;
+                                case 2 -> buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].
+                                        setGraphic(new ImageView(String.valueOf(HelloApplication.class.
+                                                getResource("ships_img/littoral_combat_ship/" + userColor + "Parts/image_part_00" + (m + 1) + ".png"))));
+                                case 3 -> buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].
+                                        setGraphic(new ImageView(String.valueOf(HelloApplication.class.
+                                                getResource("ships_img/destroyer/" + userColor + "Parts/image_part_00" + (m + 1) + ".png"))));
+                                case 4 -> buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].
+                                        setGraphic(new ImageView(String.valueOf(HelloApplication.class.
+                                                getResource("ships_img/battleship/" + userColor + "Parts/image_part_00" + (m + 1) + ".png"))));
+                                case 5 -> buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].
+                                        setGraphic(new ImageView(String.valueOf(HelloApplication.class.
+                                                getResource("ships_img/aircraft_carrier/" + userColor + "Parts/image_part_00" + (m + 1) + ".png"))));
                             }
                             //buttons[dataPackage.gracze[l].stateks[k].start_x + m][dataPackage.gracze[l].stateks[k].start_y].setText("X" + k);
                         }
@@ -253,7 +247,7 @@ public class HelloApplication extends Application {
         if(dataPackage.turn == socket.getLocalPort()){
             for(int i = 0; i < Serwer.WIDTH; i++){
                 for(int j = 0; j < Serwer.HEIGHT; j++){
-                    String PartNumber = new String("00");
+                    String PartNumber = "00";
                     PartNumber += (j * Serwer.WIDTH) + i + 1;
                     if(PartNumber.length() > 3) {
                         PartNumber = PartNumber.substring(PartNumber.length() - 3);
@@ -268,7 +262,7 @@ public class HelloApplication extends Application {
         else{
             for(int i = 0; i < Serwer.WIDTH; i++){
                 for(int j = 0; j < Serwer.HEIGHT; j++){
-                    String PartNumber = new String("00");
+                    String PartNumber = "00";
                     PartNumber += (j * Serwer.WIDTH) + i + 1;
                     if(PartNumber.length() > 3) {
                         PartNumber = PartNumber.substring(PartNumber.length() - 3);
