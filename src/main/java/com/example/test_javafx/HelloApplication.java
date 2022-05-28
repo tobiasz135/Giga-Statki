@@ -223,12 +223,12 @@ public class HelloApplication extends Application {
                     if (!dataPackage.gracze[i].stateks[l].vertical) {
                         for (int x = 0; x < dataPackage.gracze[i].stateks[l].size; x++) {
                             buttons[dataPackage.gracze[i].stateks[l].start_x + x][dataPackage.gracze[i].stateks[l].start_y].setDisable(true);
-                            buttons[dataPackage.gracze[i].stateks[l].start_x + x][dataPackage.gracze[i].stateks[l].start_y].setOpacity(1.0);
+                            //buttons[dataPackage.gracze[i].stateks[l].start_x + x][dataPackage.gracze[i].stateks[l].start_y].setOpacity(1.0);
                         }
                     } else {
                         for (int x = 0; x < dataPackage.gracze[i].stateks[l].size; x++) {
                             buttons[dataPackage.gracze[i].stateks[l].start_x][dataPackage.gracze[i].stateks[l].start_y + x].setDisable(true);
-                            buttons[dataPackage.gracze[i].stateks[l].start_x][dataPackage.gracze[i].stateks[l].start_y + x].setOpacity(1.0);
+                            //buttons[dataPackage.gracze[i].stateks[l].start_x][dataPackage.gracze[i].stateks[l].start_y + x].setOpacity(1.0);
                         }
                     }
                 }
@@ -247,6 +247,7 @@ public class HelloApplication extends Application {
                     }
                     buttons[i][j].setGraphic(new ImageView(String.valueOf(HelloApplication.class.
                             getResource("ships_img/background/parts/image_part_" + PartNumber + ".png"))));
+                    buttons[i][j].setOpacity(1);
                     buttons[i][j].setDisable(false);
                 }
             }
@@ -261,6 +262,7 @@ public class HelloApplication extends Application {
                     }
                     buttons[i][j].setGraphic(new ImageView(String.valueOf(HelloApplication.class.
                             getResource("ships_img/background/parts/image_part_" + PartNumber + ".png"))));
+                    buttons[i][j].setOpacity(0.6);
                     buttons[i][j].setDisable(true);
                 }
             }
