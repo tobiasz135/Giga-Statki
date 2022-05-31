@@ -103,11 +103,13 @@ public class HelloApplication extends Application {
                         if (dataPackage.hits[dataPackage.gracze[i].stateks[j].start_x][k]) {
                             //if(dataPackage.gracze[i].stateks[j].owner!=clientReceiver.Client.getLocalPort())
                             //buttons[dataPackage.gracze[i].stateks[j].start_x][k].setText("*");
+                            ImageView imageView=new ImageView(String.valueOf(HelloApplication.class.
+                                    getResource("ezgif.com-gif-maker-5.gif")));
+                            imageView.setY(20);
                             buttons[dataPackage.gracze[i].stateks[j].start_x][k].
-                                    setGraphic(new ImageView(String.valueOf(HelloApplication.class.
-                                            getResource("ezgif.com-gif-maker-4.gif"))));
+                                    setGraphic(imageView);
                             buttons[dataPackage.gracze[i].stateks[j].start_x][k].setBackground(new Background(new BackgroundImage(new Image(String.valueOf(HelloApplication.class.
-                                    getResource("ships_img/background/Unknown-removebg-preview-2.jpg"))),BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                                    getResource("ships_img/background/ezgif.com-gif-maker.jpg"))),BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                                     BackgroundPosition.CENTER,BackgroundSize.DEFAULT)));
                             //else{
                             //System.out.println("before Mouse event changed");
@@ -120,11 +122,13 @@ public class HelloApplication extends Application {
                         if (dataPackage.hits[k][dataPackage.gracze[i].stateks[j].start_y]) {
                             //if(dataPackage.gracze[i].stateks[j].owner!=clientReceiver.Client.getLocalPort())
                             //buttons[k][dataPackage.gracze[i].stateks[j].start_y].setText("*");
+                            ImageView imageView=new ImageView(String.valueOf(HelloApplication.class.
+                                    getResource("ezgif.com-gif-maker-5.gif")));
+                            imageView.setY(20);
                             buttons[k][dataPackage.gracze[i].stateks[j].start_y].
-                                    setGraphic(new ImageView(String.valueOf(HelloApplication.class.
-                                            getResource("ezgif.com-gif-maker-4.gif"))));
+                                    setGraphic(imageView);
                             buttons[k][dataPackage.gracze[i].stateks[j].start_y].setBackground(new Background(new BackgroundImage(new Image(String.valueOf(HelloApplication.class.
-                                    getResource("ships_img/background/Unknown-removebg-preview-2.jpg"))),BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                                    getResource("ships_img/background/ezgif.com-gif-maker.jpg"))),BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
                                     BackgroundPosition.CENTER,BackgroundSize.DEFAULT)));
                             //else {
                             //buttons[k][dataPackage.gracze[i].stateks[j].start_y].setOnMouseClicked((mouseEvent) -> {
