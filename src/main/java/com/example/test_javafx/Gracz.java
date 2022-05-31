@@ -13,6 +13,7 @@ public class Gracz implements Serializable {
     transient Socket socket;
     public int color;
     public boolean dead=false;
+    public int winner=-1;
 
     Gracz(){
         stateks = new Statek[4];

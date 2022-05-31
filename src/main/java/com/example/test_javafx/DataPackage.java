@@ -10,4 +10,5 @@ public class DataPackage implements Serializable {
     public int connected_users = Serwer.CONNECTED_USERS;
     //public Statek[] stateks = new Statek[12];
     public Gracz[] gracze = Serwer.gracze;
+
 }

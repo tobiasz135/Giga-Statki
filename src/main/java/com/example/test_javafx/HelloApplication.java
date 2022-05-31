@@ -1,6 +1,7 @@
 package com.example.test_javafx;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -9,6 +10,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -20,6 +22,7 @@ public class HelloApplication extends Application {
     public static ClientReceiver clientReceiver;
     public static int[] score=new int[3];
     public static Label[] labels=new Label[3];
+    public static HBox[] hBox = new HBox[Serwer.MAX_PLAYERS];
 
     static {
         try {
@@ -33,6 +36,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         for (int i = 0; i < 3; i++) {
             labels[i]=new Label("Statki: 4");
+            //labels[i].setBorder(new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
         }
 
         clientReceiver.start();
@@ -43,16 +47,18 @@ public class HelloApplication extends Application {
         GridPane grid = new GridPane();
         GridPane gridPane = new GridPane();
         GridPane players = new GridPane();
-        FileInputStream input = new FileInputStream("Webp.net-resizeimage.jpg");
-        Image image = new Image(input);
+        players.setBackground(new Background(new BackgroundFill(Color.GRAY,CornerRadii.EMPTY, Insets.EMPTY)));
+        players.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
+        int h=3;
         ImageView[] imageView = new ImageView[Serwer.MAX_PLAYERS];
 
 
-        HBox[] hBox = new HBox[Serwer.MAX_PLAYERS];
         for (int i = 0; i < Serwer.MAX_PLAYERS; i++) {
-            imageView[i] = new ImageView(image);
+            imageView[i] = new ImageView(String.valueOf(HelloApplication.class.
+                    getResource("avatars/av"+(i+3)+".gif")));
             hBox[i] = new HBox(imageView[i]);
             hBox[i].setPrefWidth(170);
+            hBox[i].setBackground(new Background(new BackgroundFill(Color.GRAY,CornerRadii.EMPTY, Insets.EMPTY)));
             players.add(hBox[i], i, 0);
         }
 
@@ -311,6 +317,18 @@ public class HelloApplication extends Application {
                     buttons[i][j].setDisable(true);
                 }
             }
+        }
+    }
+
+    public static void showWinner()
+    {
+        for (int i = 0; i < ClientReceiver.dataPackage.connected_users; i++) {
+            if(ClientReceiver.dataPackage.gracze[i].winner!=-1)
+            {
+                hBox[i].setBackground(new Background(new BackgroundFill(Color.YELLOW,CornerRadii.EMPTY, Insets.EMPTY)));
+                labels[i].setText("WINNER!!!");
+            }
+
         }
     }
 

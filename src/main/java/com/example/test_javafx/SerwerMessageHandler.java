@@ -24,6 +24,7 @@ public class SerwerMessageHandler extends Thread implements Serializable {
 
         //Scanner scn = new Scanner(System.in);
         while (true) {
+            Serwer.checkWinner();
 
             //clients = Serwer.clients;
             try {
@@ -32,6 +33,7 @@ public class SerwerMessageHandler extends Thread implements Serializable {
                     dataPackage.hits = Serwer.hits;
                     dataPackage.turn = Serwer.gracze[Serwer.tura % Serwer.CONNECTED_USERS].idGracza;
                     s = Serwer.gracze[i].socket;
+                    dataPackage.gracze[i].winner=Serwer.winner;
 
                     for(int l = 0; l < 4; l++){
                         dataPackage.gracze[i].stateks[l].owner = s.getPort();

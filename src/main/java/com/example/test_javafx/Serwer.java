@@ -16,6 +16,7 @@ public class Serwer extends Thread{
     public static boolean[][] hits = new boolean[WIDTH][HEIGHT];
     public static boolean[][] shipPlacement = new boolean[WIDTH][HEIGHT];
     public static int CONNECTED_USERS = 0;
+    public static int winner=-1;
     //public static List<Socket> clients = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
@@ -174,6 +175,29 @@ public class Serwer extends Thread{
 
             }
         }
+    }
+
+    public static void checkWinner() {
+        int tmpPlayer = -1;
+        int playerlive = 0;
+        for (int i = 0; i < CONNECTED_USERS; i++) {
+            int live = 4;
+            for (int j = 0; j < 4; j++) {
+                if (gracze[i].stateks[j].sank == 1)
+                    live--;
+            }
+            if (live > 0) {
+                playerlive++;
+                tmpPlayer = gracze[i].idGracza;
+
+
+            }
+
+
+        }
+        if (playerlive == 1&&CONNECTED_USERS>1)
+            winner = tmpPlayer;
+        System.out.println(winner);
     }
 
 
