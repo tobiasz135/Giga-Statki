@@ -12,6 +12,7 @@ import java.io.*;
 import java.net.Socket;
 
 public class ClientReceiver extends Thread implements Serializable {
+    public static boolean first=true;
     public static DataPackage dataPackage;
     String ip="localhost";
     int port=5056;
@@ -25,15 +26,18 @@ public class ClientReceiver extends Thread implements Serializable {
         //dis = new ObjectInputStream(Client.getInputStream());
     }
     public void updateScore(){
-        for (int i = 0; i < dataPackage.connected_users; i++) {
-            if(ClientReceiver.dataPackage.gracze[i].color==1)
-                HelloApplication.hBox[i].setBackground(new Background(new BackgroundFill(Color.RED,CornerRadii.EMPTY, Insets.EMPTY)));
-            if(ClientReceiver.dataPackage.gracze[i].color==2)
-                HelloApplication.hBox[i].setBackground(new Background(new BackgroundFill(Color.GREEN,CornerRadii.EMPTY, Insets.EMPTY)));
-            if(ClientReceiver.dataPackage.gracze[i].color==3)
-                HelloApplication.hBox[i].setBackground(new Background(new BackgroundFill(Color.FUCHSIA,CornerRadii.EMPTY, Insets.EMPTY)));
+        if(first) {
+            for (int i = 0; i < dataPackage.connected_users; i++) {
+                if (ClientReceiver.dataPackage.gracze[i].color == 1)
+                    HelloApplication.hBox[i].setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
+                if (ClientReceiver.dataPackage.gracze[i].color == 2)
+                    HelloApplication.hBox[i].setBackground(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY)));
+                if (ClientReceiver.dataPackage.gracze[i].color == 3)
+                    HelloApplication.hBox[i].setBackground(new Background(new BackgroundFill(Color.FUCHSIA, CornerRadii.EMPTY, Insets.EMPTY)));
 
-
+            }
+            if(dataPackage.connected_users==3)
+                first=false;
         }
         int alive=0;
         int index=-1;
