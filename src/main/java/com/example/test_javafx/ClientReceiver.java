@@ -1,7 +1,12 @@
 package com.example.test_javafx;
 
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.net.Socket;
@@ -20,15 +25,32 @@ public class ClientReceiver extends Thread implements Serializable {
         //dis = new ObjectInputStream(Client.getInputStream());
     }
     public void updateScore(){
+        int alive=0;
+        int index=-1;
         for (int i = 0; i < dataPackage.connected_users; i++) {
             HelloApplication.score[i]=4;
             for (int j = 0; j < 4; j++) {
                 if(!dataPackage.gracze[i].stateks[j].isAlive(dataPackage.hits))
                     HelloApplication.score[i]--;
+                if(HelloApplication.score[i]==0)
+                    HelloApplication.hBox[i].setOpacity(0.6);
+                //HelloApplication.labels[i].setText("WINNER!!!");
             }
+            if(HelloApplication.score[i]!=0)
+            {
+                alive++;
+                index=i;
+            }
+
             HelloApplication.labels[i].setText("Statki: "+ HelloApplication.score[i]);
             System.out.println(i+": "+HelloApplication.score[i]);
         }
+        if(alive==1&&dataPackage.connected_users>1)
+        {
+            HelloApplication.hBox[index].setBackground(new Background(new BackgroundFill(Color.YELLOW,CornerRadii.EMPTY, Insets.EMPTY)));
+            HelloApplication.labels[index].setText("WINNER!!!");
+        }
+
     }
 
 

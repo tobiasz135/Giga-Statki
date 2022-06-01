@@ -23,6 +23,7 @@ public class HelloApplication extends Application {
     public static int[] score=new int[3];
     public static Label[] labels=new Label[3];
     public static HBox[] hBox = new HBox[Serwer.MAX_PLAYERS];
+    public static GridPane players = new GridPane();
 
     static {
         try {
@@ -46,7 +47,7 @@ public class HelloApplication extends Application {
 
         GridPane grid = new GridPane();
         GridPane gridPane = new GridPane();
-        GridPane players = new GridPane();
+
         players.setBackground(new Background(new BackgroundFill(Color.GRAY,CornerRadii.EMPTY, Insets.EMPTY)));
         players.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
         int h=3;
