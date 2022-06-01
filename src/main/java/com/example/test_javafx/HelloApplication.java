@@ -51,6 +51,7 @@ public class HelloApplication extends Application {
 
         players.setBackground(new Background(new BackgroundFill(Color.GRAY,CornerRadii.EMPTY, Insets.EMPTY)));
         players.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
+        players.setAlignment(Pos.CENTER);
         int h=3;
         ImageView[] imageView = new ImageView[Serwer.MAX_PLAYERS];
 
