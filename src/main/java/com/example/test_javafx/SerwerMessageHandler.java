@@ -44,7 +44,7 @@ public class SerwerMessageHandler extends Thread implements Serializable {
                     dos.reset();
 
                 }
-                sleep(1000);
+                sleep(2000);
 
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();

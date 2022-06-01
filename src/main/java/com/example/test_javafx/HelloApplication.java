@@ -2,6 +2,7 @@ package com.example.test_javafx;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -54,6 +55,7 @@ public class HelloApplication extends Application {
         ImageView[] imageView = new ImageView[Serwer.MAX_PLAYERS];
 
 
+
         for (int i = 0; i < Serwer.MAX_PLAYERS; i++) {
             imageView[i] = new ImageView(String.valueOf(HelloApplication.class.
                     getResource("avatars/av"+(i+3)+".gif")));
@@ -83,6 +85,8 @@ public class HelloApplication extends Application {
             players.add(labels[i],i,1);
         }
         border.setTop(players);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(3))));
         border.setCenter(gridPane);
         Scene scene = new Scene(border, Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
         //Scene scene2 = new Scene(gridPane, 512, 500);

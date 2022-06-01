@@ -25,6 +25,16 @@ public class ClientReceiver extends Thread implements Serializable {
         //dis = new ObjectInputStream(Client.getInputStream());
     }
     public void updateScore(){
+        for (int i = 0; i < dataPackage.connected_users; i++) {
+            if(ClientReceiver.dataPackage.gracze[i].color==1)
+                HelloApplication.hBox[i].setBackground(new Background(new BackgroundFill(Color.RED,CornerRadii.EMPTY, Insets.EMPTY)));
+            if(ClientReceiver.dataPackage.gracze[i].color==2)
+                HelloApplication.hBox[i].setBackground(new Background(new BackgroundFill(Color.GREEN,CornerRadii.EMPTY, Insets.EMPTY)));
+            if(ClientReceiver.dataPackage.gracze[i].color==3)
+                HelloApplication.hBox[i].setBackground(new Background(new BackgroundFill(Color.FUCHSIA,CornerRadii.EMPTY, Insets.EMPTY)));
+
+
+        }
         int alive=0;
         int index=-1;
         for (int i = 0; i < dataPackage.connected_users; i++) {
@@ -33,7 +43,7 @@ public class ClientReceiver extends Thread implements Serializable {
                 if(!dataPackage.gracze[i].stateks[j].isAlive(dataPackage.hits))
                     HelloApplication.score[i]--;
                 if(HelloApplication.score[i]==0)
-                    HelloApplication.hBox[i].setOpacity(0.6);
+                    HelloApplication.hBox[i].setOpacity(0.4);
                 //HelloApplication.labels[i].setText("WINNER!!!");
             }
             if(HelloApplication.score[i]!=0)
